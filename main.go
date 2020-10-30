@@ -4,6 +4,7 @@ import (
 	"encoding/binary"
 	"fmt"
 	"io"
+	"io/ioutil"
 	"os"
 	"os/signal"
 	"strings"
@@ -13,7 +14,13 @@ import (
 )
 
 func main() {
-	session, err := discordgo.New("Bot NzcxNDAxMTA5OTE4MDU2NDU5.X5rlRA.m85A7K6HBh0drFo4IlUEnVpaP9s")
+	token, err := ioutil.ReadFile("token")
+	if err != nil {
+		fmt.Println("can't read token")
+		return
+	}
+
+	session, err := discordgo.New("Bot " + string(token))
 	if err != nil {
 		fmt.Println("error creating Discord session,", err)
 		return
@@ -72,7 +79,7 @@ func messageCreate(session *discordgo.Session, message *discordgo.MessageCreate)
 			fmt.Println("Can't play sound without channel")
 			return
 		}
-		playSound(channel, words[1]);
+		playSound(channel, words[1])
 	}
 }
 
